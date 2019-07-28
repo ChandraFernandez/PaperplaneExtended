@@ -16,8 +16,7 @@ from telethon.errors.rpcerrorlist import (UserIdInvalidError,
                                           MessageTooLongError)
 from telethon.tl.functions.channels import (EditAdminRequest,
                                             EditBannedRequest,
-                                            EditPhotoRequest,
-                                            GetAdminedPublicChannelsRequest)
+                                            EditPhotoRequest)
 from telethon.tl.functions.messages import UpdatePinnedMessageRequest
 from telethon.tl.types import (ChannelParticipantsAdmins, ChatAdminRights,
                                ChatBannedRights, MessageEntityMentionName,
@@ -886,7 +885,5 @@ CMD_HELP.update({
 \n\n.adminlist\
 \nUsage: Retrieves all admins in the chat.\
 \n\n.userslist or .userslist <name>\
-\nUsage: Retrieves all users in the chat.\
-\n\n.myusernames\
-\nUsage: Retrieves all public usernames owned by you."
+\nUsage: Retrieves all users in the chat."
 })
