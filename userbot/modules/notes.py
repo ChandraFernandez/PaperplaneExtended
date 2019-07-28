@@ -72,15 +72,15 @@ async def add_filter(fltr):
             if msg.media:
                 media = None
                 if isinstance(msg.media, types.MessageMediaPhoto):
-                        media = utils.get_input_photo(msg.media.photo)
-                        snip['type'] = TYPE_PHOTO
-                    elif isinstance(msg.media, types.MessageMediaDocument):
-                        media = utils.get_input_document(msg.media.document)
-                        snip['type'] = TYPE_DOCUMENT
-                    if media:
-                        snip['id'] = media.id
-                        snip['hash'] = media.access_hash
-                        snip['fr'] = media.file_reference
+                    media = utils.get_input_photo(msg.media.photo)
+                    snip['type'] = TYPE_PHOTO
+                elif isinstance(msg.media, types.MessageMediaDocument):
+                    media = utils.get_input_document(msg.media.document)
+                    snip['type'] = TYPE_DOCUMENT
+                if media:
+                    snip['id'] = media.id
+                    snip['hash'] = media.access_hash
+                    snip['fr'] = media.file_reference
 
         success = "`Note {} successfully. Use` #{} `to get it`"
         if add_note(str(fltr.chat_id), notename, snip['text'], snip['type'], snip.get('id'), snip.get('hash'), snip.get('fr')) is False:
