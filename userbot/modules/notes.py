@@ -30,9 +30,9 @@ async def notes_active(svd):
         for note in notes:
             if message == "`There are no saved notes in this chat`":
                 message = "Notes saved in this chat:\n"
-                message += "🗒️ `{}`\n".format(note["name"])
+                message += "🗒️ `{}`\n".format(note.keyword)
             else:
-                message += "🗒️ `{}`\n".format(note["name"])
+                message += "🗒️ `{}`\n".format(note.keyword)
 
         await svd.edit(message)
 
@@ -108,7 +108,7 @@ async def incom_note(getnt):
                             int(note.media_access_hash),
                             note.media_file_reference
                         )
-                    elif snip.snip_type == TYPE_DOCUMENT:
+                    elif note.snip_type == TYPE_DOCUMENT:
                         media = types.InputDocument(
                         int(snip.media_id),
                         int(snip.media_access_hash),
