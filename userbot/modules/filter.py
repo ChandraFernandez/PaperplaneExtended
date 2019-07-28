@@ -52,7 +52,7 @@ async def filter_incoming_handler(handler):
                         if handler.reply_to_msg_id:
                             message_id = handler.reply_to_msg_id
                         await handler.client.send_message(
-                            event.chat_id,
+                            handler.chat_id,
                             snip.reply,
                             reply_to=message_id,
                             file=media
