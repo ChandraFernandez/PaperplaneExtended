@@ -66,7 +66,7 @@ async def add_filter(fltr):
             return
 
         notename = fltr.pattern_match.group(1)
-        msg = await event.get_reply_message()
+        msg = await fltr.get_reply_message()
         if msg:
             snip = {'type': TYPE_TEXT, 'text': msg.message or ''}
             if msg.media:
