@@ -78,16 +78,6 @@ UNMUTE_RIGHTS = ChatBannedRights(
 )
 # ================================================
 
-@register(outgoing=True, pattern="^.myusernames$")
-async def _(event):
-    if event.fwd_from:
-        return
-    result = await bot(GetAdminedPublicChannelsRequest())
-    output_str = ""
-    for channel_obj in result.chats:
-        output_str += f"- {channel_obj.title} @{channel_obj.username}\n"
-    await event.edit(result)
-    
 @register(outgoing=True, pattern="^.setgrouppic$")
 async def set_group_photo(gpic):
     """ For .setgrouppic command, changes the picture of a group """
