@@ -72,7 +72,7 @@ async def add_new_filter(new_handler):
             return
         msg = await new_handler.get_reply_message()
         keyword = new_handler.pattern_match.group(1)
-        if message:
+        if msg:
             snip = {'type': TYPE_TEXT, 'text': msg.message or ''}
             if msg.media:
                 media = None
