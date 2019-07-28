@@ -145,9 +145,9 @@ async def download(dryb):
                     ''.join(["█" for i in range(math.floor(percentage / 5))]),
                     ''.join(["░" for i in range(20 - math.floor(percentage / 5))]),
                     round(percentage, 2))
-                estimated_total_time = downloader.get_eta()
+                estimated_total_time = downloader.get_eta(human=True)
                 try:
-                    current_message = f"Downloading...\nURL: {url}\nFile Name: {file_name}\n{progress_str}\n{humanbytes(total_length)} of {humanbytes(downloaded)}\nETA: {time_formatter(estimated_total_time)}"
+                    current_message = f"Downloading...\nURL: {url}\nFile Name: {file_name}\n{progress_str}\n{humanbytes(total_length)} of {humanbytes(downloaded)}\nETA: {estimated_total_time}"
                     if current_message != display_message:
                         await dryb.edit(current_message)
                         display_message = current_message
