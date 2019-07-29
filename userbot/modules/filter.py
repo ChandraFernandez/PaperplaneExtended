@@ -6,7 +6,7 @@
 """ Userbot module for filter commands """
 
 from asyncio import sleep
-from re import fullmatch, IGNORECASE
+from re import fullmatch, IGNORECASE, escape
 from telethon.tl import types
 from telethon import utils
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
@@ -32,7 +32,7 @@ async def filter_incoming_handler(handler):
             if not filters:
                     return
             for trigger in filters:
-                pattern = r"( |^|[^\w])" + re.escape(trigger.keyword) + r"( |$|[^\w])"
+                pattern = r"( |^|[^\w])" + escape(trigger.keyword) + r"( |$|[^\w])"
                 pro = fullmatch(pattern, name, flags=IGNORECASE)
                 if pro:
                     if trigger.snip_type == TYPE_PHOTO:
