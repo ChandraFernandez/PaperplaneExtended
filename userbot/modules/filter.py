@@ -31,7 +31,6 @@ async def filter_incoming_handler(handler):
             if not filters:
                     return
             for trigger in filters:
-                for item in listes:
                 pro = fullmatch(trigger.keyword, item, flags=IGNORECASE)
                 if pro:
                     if pro.snip_type == TYPE_PHOTO:
