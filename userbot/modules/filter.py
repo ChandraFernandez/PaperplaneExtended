@@ -36,15 +36,15 @@ async def filter_incoming_handler(handler):
                     if pro:
                         if pro.snip_type == TYPE_PHOTO:
                             media = types.InputPhoto(
-                                int(snip.media_id),
-                                int(snip.media_access_hash),
-                                snip.media_file_reference
+                                int(pro.media_id),
+                                int(pro.media_access_hash),
+                                pro.media_file_reference
                             )
                         elif pro.snip_type == TYPE_DOCUMENT:
                             media = types.InputDocument(
-                                int(snip.media_id),
-                                int(snip.media_access_hash),
-                                snip.media_file_reference
+                                int(pro.media_id),
+                                int(pro.media_access_hash),
+                                pro.media_file_reference
                             )
                         else:
                             media = None
@@ -53,7 +53,7 @@ async def filter_incoming_handler(handler):
                             message_id = handler.reply_to_msg_id
                         await handler.client.send_message(
                             handler.chat_id,
-                            snip.reply,
+                            pro.reply,
                             reply_to=message_id,
                             file=media
                         )
@@ -70,8 +70,9 @@ async def add_new_filter(new_handler):
         except AttributeError:
             await new_handler.edit("`Running on Non-SQL mode!`")
             return
-        msg = await new_handler.get_reply_message()
+            
         keyword = new_handler.pattern_match.group(1)
+        msg = await new_handler.get_reply_message()
         if msg:
             snip = {'type': TYPE_TEXT, 'text': msg.message or ''}
             if msg.media:

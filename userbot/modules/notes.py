@@ -83,6 +83,7 @@ async def add_filter(fltr):
                     snip['fr'] = media.file_reference
 
         success = "`Note {} successfully. Use` #{} `to get it`"
+        
         if add_note(str(fltr.chat_id), notename, snip['text'], snip['type'], snip.get('id'), snip.get('hash'), snip.get('fr')) is False:
             return await fltr.edit(success.format('updated', notename))
         else:
@@ -110,9 +111,9 @@ async def incom_note(getnt):
                         )
                     elif note.snip_type == TYPE_DOCUMENT:
                         media = types.InputDocument(
-                        int(snip.media_id),
-                        int(snip.media_access_hash),
-                        snip.media_file_reference
+                        int(note.media_id),
+                        int(note.media_access_hash),
+                        note.media_file_reference
                     )
                     else:
                         media = None
