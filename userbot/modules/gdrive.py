@@ -8,6 +8,7 @@ import asyncio
 import math
 import os
 import time
+from pySmartDL import SmartDL
 from telethon import events
 from datetime import datetime
 from apiclient.discovery import build
