@@ -126,7 +126,6 @@ async def incom_note(getnt):
                         reply_to=message_id,
                         file=media
                     )
-                    await getnt.delete()
     except AttributeError:
         pass
 
