@@ -155,7 +155,7 @@ async def download(target_file):
                 await target_file.edit(
                     "Incorrect URL\n{}".format(url)
                 )
-        elif message.media:
+        elif message.media is not None:
             start = datetime.now()
             try:
                 c_time = time.time()
