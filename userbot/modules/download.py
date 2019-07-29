@@ -106,7 +106,6 @@ async def download(target_file):
         input_str = target_file.pattern_match.group(1)
         if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
             os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-        message = await target_file.get_reply_message()
         if "|" in input_str:
             start = datetime.now()
             url, file_name = input_str.split("|")
@@ -155,7 +154,7 @@ async def download(target_file):
                 await target_file.edit(
                     "Incorrect URL\n{}".format(url)
                 )
-        elif message.media is not None:
+        elif target_file.reply_to_msg_id:
             start = datetime.now()
             try:
                 c_time = time.time()
