@@ -31,7 +31,7 @@ async def filter_incoming_handler(handler):
             if not filters:
                     return
             for trigger in filters:
-                pro = fullmatch(trigger.keyword, item, flags=IGNORECASE)
+                pro = fullmatch(trigger.keyword, handler.raw_text, flags=IGNORECASE)
                 if pro:
                     if pro.snip_type == TYPE_PHOTO:
                         media = types.InputPhoto(
