@@ -26,37 +26,37 @@ async def filter_incoming_handler(handler):
             except AttributeError:
                 await handler.edit("`Running on Non-SQL mode!`")
                 return
-            listes = handler.text.split(" ")
+
             filters = get_filters(handler.chat_id)
             if not filters:
                     return
             for trigger in filters:
                 for item in listes:
-                    pro = fullmatch(trigger.keyword, item, flags=IGNORECASE)
-                    if pro:
-                        if pro.snip_type == TYPE_PHOTO:
-                            media = types.InputPhoto(
-                                int(pro.media_id),
-                                int(pro.media_access_hash),
-                                pro.media_file_reference
-                            )
-                        elif pro.snip_type == TYPE_DOCUMENT:
-                            media = types.InputDocument(
-                                int(pro.media_id),
-                                int(pro.media_access_hash),
-                                pro.media_file_reference
-                            )
-                        else:
-                            media = None
-                        message_id = handler.message.id
-                        if handler.reply_to_msg_id:
-                            message_id = handler.reply_to_msg_id
-                        await handler.client.send_message(
-                            handler.chat_id,
-                            pro.reply,
-                            reply_to=message_id,
-                            file=media
+                pro = fullmatch(trigger.keyword, item, flags=IGNORECASE)
+                if pro:
+                    if pro.snip_type == TYPE_PHOTO:
+                        media = types.InputPhoto(
+                            int(pro.media_id),
+                            int(pro.media_access_hash),
+                            pro.media_file_reference
                         )
+                    elif pro.snip_type == TYPE_DOCUMENT:
+                        media = types.InputDocument(
+                            int(pro.media_id),
+                            int(pro.media_access_hash),
+                            pro.media_file_reference
+                        )
+                    else:
+                        media = None
+                    message_id = handler.message.id
+                    if handler.reply_to_msg_id:
+                        message_id = handler.reply_to_msg_id
+                    await handler.client.send_message(
+                        handler.chat_id,
+                        pro.reply,
+                        reply_to=message_id,
+                        file=media
+                    )
     except AttributeError:
         pass
 
