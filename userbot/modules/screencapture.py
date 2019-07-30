@@ -14,7 +14,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from telethon import events
 from userbot.events import register
-from userbot import GOOGLE_CHROME_BIN, CHROME_DRIVER
+from userbot import GOOGLE_CHROME_BIN, CHROME_DRIVER, CMD_HELP
 
 
 @register(pattern=r".screencapture (.*)", outgoing=True)
