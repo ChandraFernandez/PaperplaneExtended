@@ -181,7 +181,7 @@ async def download(dryb):
             try:
                 c_time = time.time()
                 downloaded_file_name = await dryb.client.download_media(
-                    message,
+                    await dryb.get_reply_message(),
                     TEMP_DOWNLOAD_DIRECTORY,
                     progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                         progress(d, t, dryb, c_time, "Downloading...")
@@ -222,7 +222,7 @@ async def download(dryb):
 async def download(set):
     """For .gsetf command, allows you to set path"""
     if not set.text[0].isalpha() and set.text[0] not in ("/", "#", "@", "!"):
-        if event.fwd_from:
+        if set.fwd_from:
             return
         await set.reply("Processing ...")
         input_str = set.pattern_match.group(1)
