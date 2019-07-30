@@ -21,12 +21,9 @@ from userbot import GOOGLE_CHROME_BIN, CHROME_DRIVER, CMD_HELP
 async def capture(url):
     """ For .screencapture command, capture a website and send the photo. """
     if not url.text[0].isalpha() and url.text[0] not in ("/", "#", "@", "!"):
-        if event.fwd_from:
+        if url.fwd_from:
             return
-        if Config.GOOGLE_CHROME_BIN is None:
-            await event.edit("need to install Google Chrome. Module Stopping.")
-            return
-        await event.edit("Processing ...")
+        await url.edit("Processing ...")
         start = datetime.now()
         try:
             chrome_options = Options()
@@ -39,18 +36,18 @@ async def capture(url):
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument('--disable-gpu')
             driver = webdriver.Chrome(executable_path=CHROME_DRIVER, options=chrome_options)
-            input_str = event.pattern_match.group(1)
+            input_str = url.pattern_match.group(1)
             driver.get(input_str)
             im_png = driver.get_screenshot_as_png()
             # saves screenshot of entire page
             driver.close()
-            message_id = event.message.id
-            if event.reply_to_msg_id:
-                message_id = event.reply_to_msg_id
+            message_id = url.message.id
+            if url.reply_to_msg_id:
+                message_id = url.reply_to_msg_id
             with io.BytesIO(im_png) as out_file:
                 out_file.name = "screencapture.png"
-                await event.client.send_file(
-                    event.chat_id,
+                await url.client.send_file(
+                    url.chat_id,
                     out_file,
                     caption=input_str,
                     force_document=True,
@@ -61,9 +58,9 @@ async def capture(url):
                 remove(out_file.name)
             end = datetime.now()
             ms = (end - start).seconds
-            await event.edit(f"Completed screencapture Process in {ms} seconds")
+            await url.edit(f"Completed screencapture Process in {ms} seconds")
         except Exception:
-            await event.edit(traceback.format_exc())
+            await url.edit(traceback.format_exc())
         
 CMD_HELP.update({
     "screencapture": ".screencapture <url>\
