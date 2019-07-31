@@ -1,4 +1,5 @@
 from telethon.utils import pack_bot_file_id
+from telethon.events import ChatAction
 from userbot.modules.sql_helper.welcome_sql import get_current_welcome_settings, add_welcome_setting, rm_welcome_setting, update_previous_welcome
 from userbot.events import register
 from userbot import CMD_HELP, bot
