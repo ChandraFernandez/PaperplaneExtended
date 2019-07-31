@@ -30,7 +30,6 @@ async def capture(url):
             chrome_options.add_argument("--headless")
             chrome_options.add_argument("--test-type")
             chrome_options.binary_location = GOOGLE_CHROME_BIN
-            chrome_options.add_argument("--window-size=1920x1080")
             chrome_options.add_argument('--ignore-certificate-errors')
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--no-sandbox")
@@ -38,6 +37,9 @@ async def capture(url):
             driver = webdriver.Chrome(executable_path=CHROME_DRIVER, options=chrome_options)
             input_str = url.pattern_match.group(1)
             driver.get(input_str)
+            height = driver.execute_script("return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);")
+            width = driver.execute_script("return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);")
+            driver.set_window_size(width + 100, height + 100)
             im_png = driver.get_screenshot_as_png()
             # saves screenshot of entire page
             driver.close()
