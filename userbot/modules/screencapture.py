@@ -8,11 +8,8 @@
 
 import io
 import traceback
-from os import remove
-from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from telethon import events
 from userbot.events import register
 from userbot import GOOGLE_CHROME_BIN, CHROME_DRIVER, CMD_HELP
 
@@ -24,7 +21,6 @@ async def capture(url):
         if url.fwd_from:
             return
         await url.edit("Processing ...")
-        start = datetime.now()
         try:
             chrome_options = Options()
             chrome_options.add_argument("--headless")
@@ -48,19 +44,15 @@ async def capture(url):
                 message_id = url.reply_to_msg_id
             with io.BytesIO(im_png) as out_file:
                 out_file.name = "screencapture.png"
+                await url.edit("Uploading screenshot as file..")
                 await url.client.send_file(
                     url.chat_id,
                     out_file,
                     caption=input_str,
                     force_document=True,
-                    reply_to=message_id,
-                    allow_cache=False,
-                    silent=True
+                    reply_to=message_id
                 )
-                remove(out_file.name)
-            end = datetime.now()
-            ms = (end - start).seconds
-            await url.edit(f"Completed screencapture Process in {ms} seconds")
+            
         except Exception:
             await url.edit(traceback.format_exc())
         
