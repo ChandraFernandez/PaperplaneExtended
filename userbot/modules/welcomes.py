@@ -53,13 +53,13 @@ async def _(event):
         msg = await event.get_reply_message()
         if msg and msg.media:
             bot_api_file_id = pack_bot_file_id(msg.media)
-            if add_welcome_setting(event.chat_id, msg.message, bot_api_file_id) is True:
+            if add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id) is True:
                 await event.edit("Welcome message saved.")
             else:
                 await event.edit("Welcome message updated.")
         else:
             input_str = event.pattern_match.group(1)
-            if add_welcome_setting(event.chat_id, input_str) is True:
+            if add_welcome_setting(event.chat_id, input_str, True, 0) is True:
                 await event.edit("Welcome message saved.")
             else:
                 await event.edit("Welcome message updated.")
