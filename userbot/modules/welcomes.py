@@ -17,7 +17,7 @@ async def _(event):
         if event.user_joined:
             if cws.should_clean_welcome:
                 try:
-                    await borg.delete_messages(
+                    await event.client.delete_messages(
                         event.chat_id,
                         cws.previous_welcome
                     )
