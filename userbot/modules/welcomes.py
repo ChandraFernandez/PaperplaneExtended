@@ -1,7 +1,7 @@
 from telethon.utils import pack_bot_file_id
 from userbot.modules.sql_helper.welcome_sql import get_current_welcome_settings, add_welcome_setting, rm_welcome_setting
 from userbot.events import register
-from userbot import CMD_HELP, bot
+from userbot import CMD_HELP, bot, LOGS
 from telethon.events import ChatAction
 
 
@@ -22,7 +22,7 @@ async def _(event):
                         cws.previous_welcome
                     )
                 except Exception as e:
-                    logger.warn(str(e))
+                    LOGS.warn(str(e))
             a_user = await event.get_user()
             info = await event.client.get_entity(event.chat_id)
 
