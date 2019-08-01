@@ -57,7 +57,7 @@ async def _(event):
                 await event.edit("Welcome message saved.")
             else:
                 await event.edit("I can save only one welcome note !!")
-        elif msg and not msg.media:
+        elif msg:
             if add_welcome_setting(event.chat_id, msg.message, True, 0) is True:
                 await event.edit("Welcome message saved.")
             else:
