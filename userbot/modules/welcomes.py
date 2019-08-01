@@ -55,6 +55,9 @@ async def _(event):
             bot_api_file_id = pack_bot_file_id(msg.media)
             add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id)
             await event.edit("Welcome message saved.")
+        elif msg and not msg.media:
+            add_welcome_setting(event.chat_id, msg.message, True, 0)
+            await event.edit("Welcome message saved.")
         else:
             input_str = event.pattern_match.group(1)
             add_welcome_setting(event.chat_id, input_str, True, 0)
