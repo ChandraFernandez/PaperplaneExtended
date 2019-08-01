@@ -26,7 +26,8 @@ async def _(event):
             chat = await event.get_chat()
 
             title = chat.title if chat.title else "this chat"
-            count = await len(event.client.get_participants(chat))
+            participants = await event.client.get_participants(chat)
+            count = len(participants)
             current_saved_welcome_message = cws.custom_welcome_message
             mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
             first = a_user.first_name
