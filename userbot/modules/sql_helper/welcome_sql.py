@@ -10,17 +10,10 @@ class Welcome(BASE):
     chat_id = Column(String(14), primary_key=True)
     custom_welcome_message = Column(UnicodeText, nullable=False)
     media_file_id = Column(UnicodeText)
-    should_clean_welcome = Column(Boolean)
+    should_clean_welcome = Column(Boolean, default=False)
     previous_welcome = Column(BigInteger)
 
-    def __init__(
-        self,
-        chat_id,
-        custom_welcome_message,
-        should_clean_welcome,
-        previous_welcome,
-        media_file_id=None,
-    ):
+    def __init__(self, chat_id, custom_welcome_message, should_clean_welcome, previous_welcome, media_file_id=None):
         self.chat_id = str(chat_id)
         self.custom_welcome_message = custom_welcome_message
         self.media_file_id = media_file_id
@@ -40,21 +33,11 @@ def get_current_welcome_settings(chat_id):
         SESSION.close()
 
 
-def add_welcome_setting(chat_id, custom_welcome_message, should_clean_welcome, previous_welcome, media_file_id=None):
-    to_check = SESSION.query(Welcome).get(str(chat_id))
-    if to_check:
-        adder = Welcome(chat_id, custom_welcome_message, should_clean_welcome, previous_welcome, media_file_id)
-        SESSION.add(adder)
-        SESSION.commit()
-        return True
-    else:
-        rem = SESSION.query(Welcome).get(str(chat_id))
-        SESSION.delete(rem)
-        SESSION.commit()
-        adder = Welcome(chat_id, custom_welcome_message, should_clean_welcome, previous_welcome, media_file_id)
-        SESSION.add(adder)
-        SESSION.commit()
-        return False
+def add_welcome_setting(chat_id, custom_welcome_message, should_clean_welcome, previous_welcome,media_file_id=None):
+    # adder = SESSION.query(Welcome).get(chat_id)
+    adder = Welcome(chat_id, custom_welcome_message, should_clean_welcome, previous_welcome, media_file_id)
+    SESSION.add(adder)
+    SESSION.commit()
 
 
 def rm_welcome_setting(chat_id):
@@ -62,9 +45,6 @@ def rm_welcome_setting(chat_id):
     if rem:
         SESSION.delete(rem)
         SESSION.commit()
-        return True
-    else:
-        return False
 
 
 def update_previous_welcome(chat_id, previous_welcome):
