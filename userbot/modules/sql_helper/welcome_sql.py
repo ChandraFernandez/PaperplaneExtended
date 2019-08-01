@@ -10,7 +10,7 @@ class Welcome(BASE):
     chat_id = Column(String(14), primary_key=True)
     custom_welcome_message = Column(UnicodeText, nullable=False)
     media_file_id = Column(UnicodeText)
-    should_clean_welcome = Column(Boolean, default=False)
+    should_clean_welcome = Column(Boolean)
     previous_welcome = Column(BigInteger)
 
     def __init__(
