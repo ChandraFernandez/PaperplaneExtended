@@ -9,7 +9,6 @@ from telethon.events import ChatAction
 async def _(event):
     cws = get_current_welcome_settings(event.chat_id)
     if cws:
-        # logger.info(event.stringify())
         """user_added=False,
         user_joined=True,
         user_left=False,
@@ -53,16 +52,12 @@ async def _(event):
         msg = await event.get_reply_message()
         if msg and msg.media:
             bot_api_file_id = pack_bot_file_id(msg.media)
-            if add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id) is True:
-                await event.edit("Welcome message saved.")
-            else:
-                await event.edit("Welcome message updated.")
+            add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id)
+            await event.edit("Welcome message saved.")
         else:
             input_str = event.pattern_match.group(1)
-            if add_welcome_setting(event.chat_id, input_str, True, 0) is True:
-                await event.edit("Welcome message saved.")
-            else:
-                await event.edit("Welcome message updated.")
+            add_welcome_setting(event.chat_id, input_str, True, 0)
+            await event.edit("Welcome message saved.")
 
 
 @register(outgoing=True, pattern="^.showwelcome$")
@@ -79,10 +74,8 @@ async def _(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
         if event.fwd_from:
             return
-        if rm_welcome_setting(event.chat_id) is True:
-            await event.edit("Welcome note cleared.")
-        else:
-            await event.edit("No welcome message saved for this chat !!")
+        rm_welcome_setting(event.chat_id)
+        await event.edit("Welcome note cleared for this chat.")
 
 
 CMD_HELP.update({
