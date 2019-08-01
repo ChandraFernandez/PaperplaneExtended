@@ -70,7 +70,7 @@ async def _(event):
                 await event.edit("I can save only one welcome note !!")
 
 
-@register(outgoing=True, pattern="^.showwelcome$")
+@register(outgoing=True, pattern="^.show welcome$")
 async def _(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
         if event.fwd_from:
@@ -79,13 +79,15 @@ async def _(event):
         await event.edit(f"The current welcome message is:\n{cws.custom_welcome_message}")
 
 
-@register(outgoing=True, pattern="^.clearwelcome")
+@register(outgoing=True, pattern="^.clear welcome")
 async def _(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
         if event.fwd_from:
             return
-        rm_welcome_setting(event.chat_id)
-        await event.edit("Welcome note cleared for this chat.")
+        if rm_welcome_setting(event.chat_id) is True:
+            await event.edit("Welcome note cleared for this chat.")
+        else:
+            await event.edit("I may not have a welcome note to remove here !!")
 
 
 CMD_HELP.update({
@@ -93,8 +95,8 @@ CMD_HELP.update({
 .welcome <notedata/reply>\
 \nUsage: Saves (or updates) notedata / replied message as a welcome note in the chat.\
 \nAvailable variables for formatting welcome messages : {mention}, {title}, {count}, {first}, {last}, {fullname}, {userid}, {username}\
-\n\n.showwelcome\
+\n\n.show welcome\
 \nUsage: Gets your current welcome message in the chat.\
-\n\n.clearwelcome\
+\n\n.clear welcome\
 \nUsage: Deletes the welcome note for the current chat.\
 "})
