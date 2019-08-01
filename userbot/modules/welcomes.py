@@ -76,18 +76,20 @@ async def _(event):
         if event.fwd_from:
             return
         cws = get_current_welcome_settings(event.chat_id)
-        await event.edit(f"The current welcome message is:\n{cws.custom_welcome_message}")
+        if cws:
+            await event.edit(f"The current welcome message is:\n{cws.custom_welcome_message}")
+        else:
+            await event.edit("No welcome note saved, use .welcome to save a welcome note for this chat.")
 
-
-@register(outgoing=True, pattern="^.clear welcome")
+@register(outgoing=True, pattern="^.disable welcome")
 async def _(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
         if event.fwd_from:
             return
         if rm_welcome_setting(event.chat_id) is True:
-            await event.edit("Welcome note cleared for this chat.")
+            await event.edit("Welcome note disabled for this chat.")
         else:
-            await event.edit("I may not have a welcome note to remove here !!")
+            await event.edit("Do I even have a welcome note here ?")
 
 
 CMD_HELP.update({
@@ -97,6 +99,6 @@ CMD_HELP.update({
 \nAvailable variables for formatting welcome messages : {mention}, {title}, {count}, {first}, {last}, {fullname}, {userid}, {username}\
 \n\n.show welcome\
 \nUsage: Gets your current welcome message in the chat.\
-\n\n.clear welcome\
+\n\n.disable welcome\
 \nUsage: Deletes the welcome note for the current chat.\
 "})
