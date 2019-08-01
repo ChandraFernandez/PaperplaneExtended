@@ -34,17 +34,24 @@ def get_current_welcome_settings(chat_id):
 
 
 def add_welcome_setting(chat_id, custom_welcome_message, should_clean_welcome, previous_welcome,media_file_id=None):
-    # adder = SESSION.query(Welcome).get(chat_id)
-    adder = Welcome(chat_id, custom_welcome_message, should_clean_welcome, previous_welcome, media_file_id)
-    SESSION.add(adder)
-    SESSION.commit()
+    try:
+        adder = Welcome(chat_id, custom_welcome_message, should_clean_welcome, previous_welcome, media_file_id)
+        SESSION.add(adder)
+        SESSION.commit()
+        return True
+    except:
+        return False
 
 
 def rm_welcome_setting(chat_id):
-    rem = SESSION.query(Welcome).get(str(chat_id))
-    if rem:
-        SESSION.delete(rem)
-        SESSION.commit()
+    try:
+        rem = SESSION.query(Welcome).get(str(chat_id))
+        if rem:
+            SESSION.delete(rem)
+            SESSION.commit()
+            return True
+    except:
+        return False
 
 
 def update_previous_welcome(chat_id, previous_welcome):
