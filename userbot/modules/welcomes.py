@@ -23,10 +23,10 @@ async def _(event):
                 except Exception as e:
                     LOGS.warn(str(e))
             a_user = await event.get_user()
-            info = await event.client.get_entity(event.chat_id)
+            chat = await event.get_chat()
 
-            title = info.title if info.title else "this chat"
-            count = await len(event.client.get_participants(event.chat_id))
+            title = chat.title if chat.title else "this chat"
+            count = await len(event.client.get_participants(chat))
             current_saved_welcome_message = cws.custom_welcome_message
             mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
             first = a_user.first_name
