@@ -6,14 +6,14 @@ from telethon.events import ChatAction
 
 
 @bot.on(ChatAction)
-async def _(event):
+async def welcome_to_chat(event):
     cws = get_current_welcome_settings(event.chat_id)
     if cws:
         """user_added=False,
         user_joined=True,
         user_left=False,
         user_kicked=False,"""
-        if event.user_joined:
+        if event.user_joined or event.user_added:
             if cws.should_clean_welcome:
                 try:
                     await event.client.delete_messages(
@@ -46,33 +46,37 @@ async def _(event):
 
 
 @register(outgoing=True, pattern=r"^.welcome (.*)")
-async def _(event):
+async def save_welcome(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
         if event.fwd_from:
             return
         msg = await event.get_reply_message()
-        if msg: 
-            if msg.media:
-                bot_api_file_id = pack_bot_file_id(msg.media)
-                if add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id) is True:
-                    await event.edit("Welcome message saved.")
-                else:
-                    await event.edit("I can save only one welcome note !!")
-            else:
-                if add_welcome_setting(event.chat_id, msg.text, True, 0) is True:
-                    await event.edit("Welcome message saved.")
-                else:
-                    await event.edit("I can save only one welcome note !!")
-        else:
-            input_str = event.pattern_match.group(1)
+        input_str = event.pattern_match.group(1)
+        if input_str:
+            bot_api_file_id = pack_bot_file_id(msg.media)
             if add_welcome_setting(event.chat_id, input_str, True, 0) is True:
-                await event.edit("Welcome message saved.")
+                await event.edit("Welcome note saved !!")
             else:
                 await event.edit("I can save only one welcome note !!")
+        elif msg and msg.media:
+            bot_api_file_id = pack_bot_file_id(msg.media)
+            if add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id) is True:
+                await event.edit("Welcome note saved !!")
+            else:
+                await event.edit("I can save only one welcome note !!")
+        elif msg:
+            welcome = msg.text
+            if add_welcome_setting(event.chat_id, welcome, True, 0) is True:
+                await event.edit("Welcome note saved !!")
+            else:
+                await event.edit("I can save only one welcome note !!")
+        else:
+            await event.edit("I need something to save as a welcome note !!")
+            return
 
 
 @register(outgoing=True, pattern="^.show welcome$")
-async def _(event):
+async def show_welcome(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
         if event.fwd_from:
             return
@@ -82,8 +86,8 @@ async def _(event):
         else:
             await event.edit("No welcome note saved, use .welcome to save a welcome note for this chat.")
 
-@register(outgoing=True, pattern="^.disable welcome")
-async def _(event):
+@register(outgoing=True, pattern="^.del welcome")
+async def del_welcome(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
         if event.fwd_from:
             return
@@ -100,6 +104,6 @@ CMD_HELP.update({
 \nAvailable variables for formatting welcome messages : {mention}, {title}, {count}, {first}, {last}, {fullname}, {userid}, {username}\
 \n\n.show welcome\
 \nUsage: Gets your current welcome message in the chat.\
-\n\n.disable welcome\
+\n\n.del welcome\
 \nUsage: Deletes the welcome note for the current chat.\
 "})
