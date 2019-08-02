@@ -45,7 +45,7 @@ async def welcome_to_chat(event):
             )
 
 
-@register(outgoing=True, pattern=r"^.welcome (.*)")
+@register(outgoing=True, pattern=r"^.welcome(?: |$)(.*)")
 async def save_welcome(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
         if event.fwd_from:
@@ -53,26 +53,29 @@ async def save_welcome(event):
         msg = await event.get_reply_message()
         input_str = event.pattern_match.group(1)
         if input_str:
-            bot_api_file_id = pack_bot_file_id(msg.media)
             if add_welcome_setting(event.chat_id, input_str, True, 0) is True:
                 await event.edit("Welcome note saved !!")
             else:
-                await event.edit("I can save only one welcome note !!")
+                rm_welcome_setting(event.chat_id)
+                add_welcome_setting(event.chat_id, input_str, True, 0)
+                await event.edit("Welcome note updated !!")
         elif msg and msg.media:
             bot_api_file_id = pack_bot_file_id(msg.media)
             if add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id) is True:
                 await event.edit("Welcome note saved !!")
             else:
-                await event.edit("I can save only one welcome note !!")
-        elif msg:
-            welcome = msg.text
-            if add_welcome_setting(event.chat_id, welcome, True, 0) is True:
+                rm_welcome_setting(event.chat_id)
+                add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id)
+                await event.edit("Welcome note updated !!")
+        elif msg.message is not None:
+            if add_welcome_setting(event.chat_id, msg.message, True, 0) is True:
                 await event.edit("Welcome note saved !!")
             else:
-                await event.edit("I can save only one welcome note !!")
+                rm_welcome_setting(event.chat_id)
+                add_welcome_setting(event.chat_id, msg.message, True, 0)
+                await event.edit("Welcome note updated !!")
         else:
             await event.edit("I need something to save as a welcome note !!")
-            return
 
 
 @register(outgoing=True, pattern="^.show welcome$")
