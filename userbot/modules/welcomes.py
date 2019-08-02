@@ -54,28 +54,20 @@ async def save_welcome(event):
         input_str = event.pattern_match.group(1)
         if input_str:
             if add_welcome_setting(event.chat_id, input_str, True, 0) is True:
-                await event.edit("Welcome note saved !!")
+                await event.edit("`Welcome note saved !!`")
             else:
-                rm_welcome_setting(event.chat_id)
-                add_welcome_setting(event.chat_id, input_str, True, 0)
-                await event.edit("Welcome note updated !!")
+                await event.edit("`I can only have one welcome note per chat !!`")
         elif msg and msg.media:
             bot_api_file_id = pack_bot_file_id(msg.media)
             if add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id) is True:
-                await event.edit("Welcome note saved !!")
+                await event.edit("`Welcome note saved !!`")
             else:
-                rm_welcome_setting(event.chat_id)
-                add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id)
-                await event.edit("Welcome note updated !!")
+                await event.edit("`I can only have one welcome note per chat !!`")
         elif msg.message is not None:
             if add_welcome_setting(event.chat_id, msg.message, True, 0) is True:
-                await event.edit("Welcome note saved !!")
+                await event.edit("`Welcome note saved !!`")
             else:
-                rm_welcome_setting(event.chat_id)
-                add_welcome_setting(event.chat_id, msg.message, True, 0)
-                await event.edit("Welcome note updated !!")
-        else:
-            await event.edit("I need something to save as a welcome note !!")
+                await event.edit("`I can only have one welcome note per chat !!`")
 
 
 @register(outgoing=True, pattern="^.show welcome$")
@@ -85,9 +77,9 @@ async def show_welcome(event):
             return
         cws = get_current_welcome_settings(event.chat_id)
         if cws:
-            await event.edit(f"The current welcome message is:\n{cws.custom_welcome_message}")
+            await event.edit(f"`The current welcome message is:`\n{cws.custom_welcome_message}")
         else:
-            await event.edit("No welcome note saved, use .welcome to save a welcome note for this chat.")
+            await event.edit("`No welcome note saved here !!`")
 
 @register(outgoing=True, pattern="^.del welcome")
 async def del_welcome(event):
@@ -95,9 +87,9 @@ async def del_welcome(event):
         if event.fwd_from:
             return
         if rm_welcome_setting(event.chat_id) is True:
-            await event.edit("Welcome note disabled for this chat.")
+            await event.edit("`Welcome note deleted for this chat.`")
         else:
-            await event.edit("Do I even have a welcome note here ?")
+            await event.edit("`Do I even have a welcome note here ?`")
 
 
 CMD_HELP.update({
