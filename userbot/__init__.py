@@ -45,13 +45,13 @@ if version_info[0] < 3 or version_info[1] < 6:
 CONFIG_CHECK = os.environ.get("", None)
 
 if CONFIG_CHECK:
-    LOGS.error("Please remove the line mentioned in the first hashtag from the config.env file")
+    LOGS.error("")
     quit(1)
 
 
-API_KEY = os.environ.get("API_KEY", "974783")
+API_KEY = os.environ.get("API_KEY", "967692")
 
-API_HASH = os.environ.get("API_HASH", "86a96fbebb6ba9edb7ffe8fc8464f8da")
+API_HASH = os.environ.get("API_HASH", "b7d4c3cb518bbbb001a493bdbd629f71")
 
 STRING_SESSION = os.environ.get("STRING_SESSION", None)
 
